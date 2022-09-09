@@ -1,0 +1,868 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "VernyHub", HidePremium = false, SaveConfig = true, ConfigFolder = "VernyHubOrion", Icon = "https://cdn.discordapp.com/attachments/1014982535140360303/1016417617696784494/unknown.png"})
+
+--[[
+Name = "VernyHub" - The name of the UI.
+HidePremium = <bool> - Whether or not the user details shows Premium status or not.
+SaveConfig = <bool> - Toggles the config saving in the UI.
+ConfigFolder = <string> - The name of the folder where the configs are saved.
+IntroEnabled = <bool> - Whether or not to show the intro animation.
+IntroText = <string> - Text to show in the intro animation.
+IntroIcon = <string> - URL to the image you want to use in the intro animation.
+Icon = "https://cdn.epicstream.com/assets/uploads/newscover/1626801804destructo.jpg" - URL to the image you want displayed on the window.
+CloseCallback = <function> - Function to execute when the window is closed.
+]]
+
+local Main = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = "AutoFarm" - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+function teleportTO2(placeCFrame)
+  local plyr = game.Players.LocalPlayer
+  if plyr.Character then
+  plyr.Character.HumanoidRootPart.CFrame = placeCFrame;
+     end
+  end
+
+  function teleportEgg(egg)
+    if game:GetService("Workspace").MapFunctions.Eggs:FindFirstChild(egg) then
+      teleportTO2(game:GetService("Workspace").MapFunctions.Eggs[egg].EggInfo.PricePart.CFrame)
+    end
+  end
+
+
+
+
+local MainSection = Main:AddSection({
+	Name = "AutoFarm"
+})
+
+Main:AddLabel("I suggest use autoyoyo and auto sell at the same time(OP)")
+
+Main:AddLabel("! DO NOT BUY A NEW YOYO OR BACKPACK WHILE USING")
+
+Main:AddLabel("! AUTO SELL AND AUTO YOYO IT WILL BREAK IT!")
+
+Main:AddToggle({
+	Name = "AutoYoyo",
+	Default = false,
+	Callback = function(Value)
+		_G.autoyoyo = Value;
+
+task.spawn(function()
+    while wait() do
+       if _G.autoyoyo == true then
+        game:GetService("ReplicatedStorage").GameEvents.ToolEvents.ToolEvent:FireServer("Merman Yo-Yo",game:GetService("Players").LocalPlayer)
+      end
+    end
+  end) 
+end    
+})
+
+Main:AddToggle({
+	Name = "AutoSell",
+	Default = false,
+	Callback = function(AutoSV)
+		_G.autosell = AutoSV;
+
+
+
+task.spawn(function()
+    while _G.autosell == true do
+        local playerHead = game.Players.LocalPlayer.Character.Head
+   for i, v in pairs(game:GetService("Workspace").MapFunctions.Sell.Toyland.HitBox:GetDescendants()) do
+      if v.Name == "TouchInterest" and v.Parent then
+        firetouchinterest(playerHead, v.Parent, 0)
+          wait(0.1)
+       firetouchinterest(playerHead, v.Parent, 1)
+       break;
+    end
+end
+    end
+end)
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
+_G.CollectChests = pcall(function()
+  local playerHead = game.Players.LocalPlayer.Character.Head
+  for i, v in pairs(game:GetService("Workspace").MapFunctions.Chests:GetDescendants()) do
+      if v.Name == "TouchInterest" and v.Parent then
+          firetouchinterest(playerHead, v.Parent, 0)
+          wait(0.1)
+          firetouchinterest(playerHead, v.Parent, 1)
+      end
+  end
+end)    
+
+
+Main:AddButton({
+  Name = "AutoCollectChests",
+  Callback = function()
+      _G.CollectChests()
+  end    
+})  
+
+
+local Main = Window:MakeTab({
+	Name = "RemovePopUps",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+Main:AddLabel("I highly suggest u turn these on since it wont lag ur game")
+
+--removegui
+
+Main:AddToggle({
+	Name = "RemoveClicksPopUp",
+	Default = false,
+	Callback = function(Value)
+		_G.removeclicks = Value;
+
+task.spawn(function()
+  while _G.removeclicks do
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Clicks.Icon.Visible = false
+      wait()
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Clicks.Amount.Visible = false
+   if _G.removecoins == false then
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Clicks.Icon.Visible = true
+      wait()
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Clicks.Amount.Visible = true
+    end
+
+  end
+
+end)
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
+
+Main:AddToggle({
+	Name = "RemoveCoinsPopUp",
+	Default = false,
+	Callback = function(Value)
+		_G.removecoins = Value;
+
+task.spawn(function()
+  while _G.removecoins do
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Coins.Icon.Visible = false
+      wait()
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Coins.Amount.Visible = false
+   if _G.removecoins == false then
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Coins.Icon.Visible = true
+      wait()
+      game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.Coins.Amount.Visible = true
+    end
+
+  end
+
+end)
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
+
+
+
+
+Main:AddToggle({
+	Name = "RemovePetXpPopUp",
+	Default = false,
+	Callback = function(Value)
+    _G.removepetxp = Value;
+
+    task.spawn(function()
+      while _G.removepetxp do
+          game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.PetExp.Icon.Visible = false
+          wait()
+          game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.PetExp.Amount.Visible = false
+       if _G.removecoins == false then
+          game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.PetExp.Icon.Visible = true
+          wait()
+          game:GetService("Players").LocalPlayer.PlayerGui.MainGui.PopUpFrame.PetExp.Amount.Visible = true
+        end
+  
+      end
+  
+    end)
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
+
+
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+
+local Main = Window:MakeTab({
+	Name = "AutoBuy",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+
+local MainSection = Main:AddSection({
+	Name = "Very Good use with auto farm"
+})
+
+--[[
+Name = <string> - The name of the section.
+]]
+
+Main:AddLabel("But be carefull since it can break auto yoyo and auto sell")
+
+
+
+
+Main:AddToggle({
+	Name = "AutoBuyBackPacks",
+	Default = false,
+	Callback = function(Value)
+		_G.autobackpack = Value;
+
+task.spawn(function()
+while _G.autobackpack do
+local args = {
+  [1] = game:GetService("Players").LocalPlayer
+}
+
+game:GetService("ReplicatedStorage").GameEvents.BackpackEvents.BuyAllBackpacks:FireServer(unpack(args))
+wait()
+ end
+end)
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
+
+
+
+
+
+
+
+
+
+Main:AddToggle({
+	Name = "AutoBuyYoyo",
+	Default = false,
+	Callback = function(Value)
+		_G.autoyoyobuy = Value;
+
+task.spawn(function()
+while _G.autoyoyobuy do
+local args = {
+  [1] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.ToolEvents.BuyAllTools:FireServer(unpack(args))
+wait()
+ end
+end)
+
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
+
+local Main = Window:MakeTab({
+	Name = "Auto Eggs",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+--worlds
+
+function teleportTO(placeCFrame)
+local plyr = game.Players.LocalPlayer
+if plyr.Character then
+plyr.Character.HumanoidRootPart.CFrame = placeCFrame;
+   end
+end
+function teleportWorld(world)
+  if game:GetService("Workspace").MapFunctions.Zones:FindFirstChild(world) then
+    teleportTO(game:GetService("Workspace").MapFunctions.Zones[world].CFrame)
+  end
+end
+
+teleportWorld('Toyland')
+
+teleportTO(game:GetService("Workspace").MapFunctions.Zones.Toyland.CFrame)
+
+
+
+
+
+--eggs
+
+
+local selectedEgg;
+
+Main:AddDropdown({
+	Name = "Select Egg To tp",
+	Default = "1",
+	Options = {"Starter Egg", "Premium Egg", "Ice Cream Egg", "Candy Cane Egg", "Cactus Egg", "Mummy Egg", "Sand Egg", "Hydra Egg", "Lava Rock Egg", "Volcano Egg", "Lava Dragon Egg", "Neptune Egg", "Cthulu Egg", "Trident Egg", "Watermelon Egg", "Burger Egg", "Actual Egg", "8-Bit Egg", "Toy Egg", "Gold 8-Bit Egg", "Rare Egg",},
+	Callback = function(Eggtp)
+		selectedEgg = Eggtp;
+    print(Eggtp)
+	end    
+})
+
+--[[
+Name = <string> - The name of the dropdown.
+Default = <string> - The default value of the dropdown.
+Options = <table> - The options in the dropdown.
+Callback = <function> - The function of the dropdown.
+]]
+
+
+Main:AddButton({
+	Name = "Teleport to selected egg",
+	Callback = function()
+if selectedEgg then
+      		teleportEgg(selectedEgg)
+end
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+
+
+
+
+function teleportTO2(placeCFrame)
+  local plyr = game.Players.LocalPlayer
+  if plyr.Character then
+  plyr.Character.HumanoidRootPart.CFrame = placeCFrame;
+     end
+    end
+  function teleportEgg(egg)
+    if game:GetService("Workspace").MapFunctions.Eggs:FindFirstChild(egg) then
+      teleportTO2(game:GetService("Workspace").MapFunctions.Eggs[egg].EggInfo.PricePart.CFrame)
+    end
+  end
+  
+teleportEgg('Rare Egg')
+
+
+local MainSection = Main:AddSection({
+	Name = "Teleport to the egg u want to auto open"
+})
+
+--autoopenegg
+
+local MainSection = Main:AddSection({
+	Name = "Automatically Open Eggs"
+})
+
+--[[
+Name = <string> - The name of the section.
+]]
+
+
+
+
+
+Main:AddToggle({
+	Name = "AutoStarterEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg1 = Value;
+
+task.spawn(function()
+  while _G.autoegg1 do
+local args = {
+  [1] = "Starter Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
+
+Main:AddToggle({
+	Name = "AutoPremiumEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg2 = Value;
+
+task.spawn(function()
+  while _G.autoegg2 do
+local args = {
+  [1] = "Premium Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+Main:AddToggle({
+	Name = "AutoIceCreamEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg3 = Value;
+
+task.spawn(function()
+  while _G.autoegg3 do
+local args = {
+  [1] = "Ice Cream Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+Main:AddToggle({
+	Name = "AutoCandyCaneEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg4 = Value;
+
+task.spawn(function()
+  while _G.autoegg4 do
+local args = {
+  [1] = "Candy Cane Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+Main:AddToggle({
+	Name = "AutoCactusEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg5 = Value;
+
+task.spawn(function()
+  while _G.autoegg5 do
+local args = {
+  [1] = "Cactus Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+Main:AddToggle({
+	Name = "AutoMummyEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg6 = Value;
+
+task.spawn(function()
+  while _G.autoegg6 do
+local args = {
+  [1] = "Mummy Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+Main:AddToggle({
+	Name = "AutoSandEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg7 = Value;
+
+task.spawn(function()
+  while _G.autoegg7 do
+local args = {
+  [1] = "Sand Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+Main:AddToggle({
+	Name = "AutoHydraEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg8 = Value;
+
+task.spawn(function()
+  while _G.autoegg8 do
+local args = {
+  [1] = "Hydra Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+Main:AddToggle({
+	Name = "AutoLavaRockEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg9 = Value;
+
+task.spawn(function()
+  while _G.autoegg9 do
+local args = {
+  [1] = "Lava Rock Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+Main:AddToggle({
+	Name = "AutoVolcanoEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg10 = Value;
+
+task.spawn(function()
+  while _G.autoegg10 do
+local args = {
+  [1] = "Volcano Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+
+Main:AddToggle({
+	Name = "AutoLavaDragonEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg11 = Value;
+
+task.spawn(function()
+  while _G.autoegg11 do
+local args = {
+  [1] = "Lava Dragon Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+Main:AddToggle({
+	Name = "AutoNeptuneEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg12 = Value;
+
+task.spawn(function()
+  while _G.autoegg12 do
+local args = {
+  [1] = "Cthulu Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+
+Main:AddToggle({
+	Name = "AutoTridentEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg13 = Value;
+
+task.spawn(function()
+  while _G.autoegg13 do
+local args = {
+  [1] = "Watermelon Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+Main:AddToggle({
+	Name = "AutoBurgerEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg14 = Value;
+
+task.spawn(function()
+  while _G.autoegg14 do
+local args = {
+  [1] = "Burger Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+Main:AddToggle({
+	Name = "AutoActualEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg15 = Value;
+
+task.spawn(function()
+  while _G.autoegg15 do
+local args = {
+  [1] = "Actual Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+Main:AddToggle({
+	Name = "Auto8-BitEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg16 = Value;
+
+task.spawn(function()
+  while _G.autoegg16 do
+local args = {
+  [1] = "8-Bit Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+
+Main:AddToggle({
+	Name = "AutoToyEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg17 = Value;
+
+task.spawn(function()
+  while _G.autoegg17 do
+local args = {
+  [1] = "Toy Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+
+
+
+
+Main:AddToggle({
+	Name = "AutoGold8-BitEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg18 = Value;
+
+task.spawn(function()
+  while _G.autoegg18 do
+local args = {
+  [1] = "Gold 8-Bit Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
+
+
+
+
+
+Main:AddToggle({
+	Name = "AutoRareEgg",
+	Default = false,
+	Callback = function(Value)
+		_G.autoegg19 = Value;
+
+task.spawn(function()
+  while _G.autoegg19 do
+local args = {
+  [1] = "Rare Egg",
+  [2] = "SingleEgg",
+  [3] = game:GetService("Players").LocalPlayer
+}
+game:GetService("ReplicatedStorage").GameEvents.EggEvent:FireServer(unpack(args))
+wait()
+   end
+end)
+	end    
+})
+
